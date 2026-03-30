@@ -121,7 +121,7 @@ function NodesPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-4 mb-8">
-        <StatCard label="Total Nodes" value={stats.total} icon={Monitor} />
+        <StatCard label="Total Nodes" value={stats.total} icon={Monitor} iconColor="text-cyan-500" />
         <StatCard label="Online" value={stats.online} icon={Wifi} variant="success" />
         <StatCard label="Offline" value={stats.offline} icon={WifiOff} variant="danger" />
       </div>
@@ -143,7 +143,7 @@ function NodesPage() {
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Device Name</th>
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">IP Address</th>
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">User</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">OS</th>
+                {/* <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">OS</th> */}
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Status</th>
                 <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Last Seen</th>
                 <th className="text-right px-6 py-4 text-sm font-medium text-muted-foreground">Actions</th>
@@ -155,7 +155,7 @@ function NodesPage() {
                   <td className="px-6 py-4 font-mono text-sm text-foreground">{node.name}</td>
                   <td className="px-6 py-4 font-mono text-sm text-muted-foreground">{node.ip}</td>
                   <td className="px-6 py-4 text-sm text-muted-foreground">{node.user}</td>
-                  <td className="px-6 py-4">
+                  {/* <td className="px-6 py-4">
                     <span className={cn(
                       'inline-flex px-2 py-1 text-xs font-medium rounded',
                       node.os === 'Windows' ? 'bg-blue-500/20 text-blue-400' : 
@@ -165,7 +165,7 @@ function NodesPage() {
                     )}>
                       {node.os}
                     </span>
-                  </td>
+                  </td> */}
                   <td className="px-6 py-4">
                     <span className={cn(
                       'inline-flex items-center gap-2 px-2 py-1 text-xs font-medium rounded',
@@ -269,7 +269,7 @@ function NodesPage() {
   )
 }
 
-function StatCard({ label, value, icon: Icon, variant }) {
+function StatCard({ label, value, icon: Icon, variant, iconColor }) {
   return (
     <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex items-center justify-between">
@@ -284,11 +284,11 @@ function StatCard({ label, value, icon: Icon, variant }) {
         </div>
         <div className={cn(
           'p-3 rounded-lg',
-          variant === 'success' ? 'bg-green-500/20' : variant === 'danger' ? 'bg-red-500/20' : 'bg-primary/20'
+          variant === 'success' ? 'bg-green-500/20' : variant === 'danger' ? 'bg-red-500/20' : 'bg-cyan-400/10'
         )}>
           <Icon className={cn(
             'w-6 h-6',
-            variant === 'success' ? 'text-green-400' : variant === 'danger' ? 'text-red-400' : 'text-primary'
+            iconColor || (variant === 'success' ? 'text-green-400' : variant === 'danger' ? 'text-red-400' : 'text-primary')
           )} />
         </div>
       </div>

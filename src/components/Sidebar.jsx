@@ -13,7 +13,7 @@ function Sidebar({ user, activePage, onPageChange, onLogout }) {
       {/* Logo */}
       <div className="p-6 border-b border-border">
         <h1 className="text-xl font-bold text-foreground">
-          CR<span className="text-primary">MS</span>
+          CR<span className="text-property">MS</span>
         </h1>
         <p className="text-xs text-muted-foreground mt-1">
           Remote Monitoring System

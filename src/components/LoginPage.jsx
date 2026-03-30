@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Eye, EyeOff, Lock, User } from 'lucide-react'
+// import '../index.css'
 
 const USERS = {
   admin: { password: 'crms@2024', name: 'Administrator' },
@@ -36,7 +37,7 @@ function LoginPage({ onLogin }) {
         {/* Logo */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            CR<span className="text-primary">MS</span>
+            CR<span className="text-property">MS</span>
           </h1>
           <p className="text-muted-foreground text-sm">
             Centralised Remote Monitoring System
