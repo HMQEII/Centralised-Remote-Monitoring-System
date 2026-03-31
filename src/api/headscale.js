@@ -93,9 +93,10 @@ export async function getAllPreAuthKeys() {
   for (const user of users) {
     try {
       const keys = await getPreAuthKeys(user.name);
-      allKeys.push(...keys.map(key => ({ ...key, user: user.name })));
+      // allKeys.push(...keys.map(key => ({ ...key, user: user.name })));
+      allKeys.push(...keys.map(key => ({ ...key, user: user.name, userId: user.id })));
     } catch (e) {
-      // User might not have any keys
+      console.log('failed to get keys for user:', user.name, e.message)
     }
   }
   
@@ -122,6 +123,7 @@ export async function createPreAuthKey(user, reusable = false, ephemeral = false
 }
 
 export async function expirePreAuthKey(user, key) {
+  console.log('expiring key:', key)
   return apiCall('/preauthkey/expire', {
     method: 'POST',
     body: JSON.stringify({ user, key }),

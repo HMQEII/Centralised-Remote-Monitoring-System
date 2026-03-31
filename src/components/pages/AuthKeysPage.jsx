@@ -10,6 +10,7 @@ const expiryOptions = [
   { label: '30 Days', value: '30d' },
   { label: '90 Days', value: '90d' },
   { label: '1 Year', value: '1y' },
+  { label: 'Never', value: 'never' },
 ]
 
 function AuthKeysPage() {
@@ -39,19 +40,22 @@ function AuthKeysPage() {
         getAllPreAuthKeys()
       ])
       
-      setUsers(usersData.map(u => u.name))
-      
+      console.log('raw keys:', keysData)
+      // setUsers(usersData.map(u => u.name))
+      setUsers(usersData)
+
       const transformedKeys = keysData.map(key => ({
         id: key.id,
         key: key.key,
         user: key.user,
+        userId: key.userId,
         reusable: key.reusable,
         ephemeral: key.ephemeral,
         used: key.used,
         expiration: formatDate(key.expiration),
         expired: new Date(key.expiration) < new Date(),
         createdAt: formatDate(key.createdAt),
-      }))
+      })).filter(key => !key.expired)
       
       setKeys(transformedKeys)
     } catch (err) {
@@ -80,6 +84,7 @@ function AuthKeysPage() {
       case '30d': date.setDate(date.getDate() + 30); break
       case '90d': date.setDate(date.getDate() + 90); break
       case '1y': date.setFullYear(date.getFullYear() + 1); break
+      case 'never': return '2099-01-01T00:00:00Z'
     }
     return date.toISOString()
   }
@@ -100,9 +105,14 @@ function AuthKeysPage() {
   }
 
   const handleExpire = async (key) => {
+    console.log('expiring key:', key.user, key.key)
     try {
+      // setActionLoading(true)
+      // await expirePreAuthKey(key.userId, key.key)
+      // await fetchData()
       setActionLoading(true)
-      await expirePreAuthKey(key.user, key.key)
+      const response = await expirePreAuthKey(key.userId, key.key)
+      console.log('expire response:', response)
       await fetchData()
     } catch (err) {
       setError(err.message)
@@ -289,8 +299,11 @@ function AuthKeysPage() {
                   className="w-full bg-input border border-border rounded-md py-2 px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <option value="">Select a user</option>
-                  {users.map(user => (
+                  {/* {users.map(user => (
                     <option key={user} value={user}>{user}</option>
+                  ))} */}
+                  {users.map(user => (
+                    <option key={user.id} value={user.id}>{user.name}</option>
                   ))}
                 </select>
               </div>
