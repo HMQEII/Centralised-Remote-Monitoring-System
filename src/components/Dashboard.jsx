@@ -21,7 +21,7 @@ function Dashboard({ user, onLogout }) {
   }
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background dark:bg-background-dark flex">
       <Sidebar
         user={user}
         activePage={activePage}

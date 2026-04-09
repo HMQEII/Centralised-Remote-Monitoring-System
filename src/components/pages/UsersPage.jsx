@@ -76,12 +76,12 @@ function UsersPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Users</h1>
+        <h1 className="text-2xl font-bold text-foreground dark:text-foreground-dark">Users</h1>
         <div className="flex items-center gap-3">
           <button
             onClick={fetchUsers}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark hover:bg-secondary dark:bg-secondary-dark rounded-md transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -104,36 +104,36 @@ function UsersPage() {
       )}
 
       {/* Table */}
-      <div className="bg-card border border-border rounded-lg overflow-hidden">
+      <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg overflow-hidden">
         {loading && users.length === 0 ? (
           <div className="flex items-center justify-center py-12">
-            <RefreshCw className="w-6 h-6 text-muted-foreground animate-spin" />
+            <RefreshCw className="w-6 h-6 text-muted-foreground dark:text-muted-foreground-dark animate-spin" />
           </div>
         ) : users.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground">
+          <div className="text-center py-12 text-muted-foreground dark:text-muted-foreground-dark">
             No users found
           </div>
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border bg-secondary/50">
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">ID</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Name</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Created</th>
-                <th className="text-right px-6 py-4 text-sm font-medium text-muted-foreground">Actions</th>
+              <tr className="border-b border-border dark:border-border-dark bg-secondary dark:bg-secondary-dark/50">
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">ID</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Name</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Created</th>
+                <th className="text-right px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id} className="border-b border-border last:border-0 hover:bg-secondary/30 transition-colors">
-                  <td className="px-6 py-4 font-mono text-sm text-muted-foreground">{user.id}</td>
-                  <td className="px-6 py-4 text-sm text-foreground font-medium">{user.name}</td>
-                  <td className="px-6 py-4 font-mono text-sm text-muted-foreground">{user.created}</td>
+                <tr key={user.id} className="border-b border-border dark:border-border-dark last:border-0 hover:bg-secondary dark:bg-secondary-dark/30 transition-colors">
+                  <td className="px-6 py-4 font-mono text-sm text-muted-foreground dark:text-muted-foreground-dark">{user.id}</td>
+                  <td className="px-6 py-4 text-sm text-foreground dark:text-foreground-dark font-medium">{user.name}</td>
+                  <td className="px-6 py-4 font-mono text-sm text-muted-foreground dark:text-muted-foreground-dark">{user.created}</td>
                   <td className="px-6 py-4">
                     <div className="flex justify-end">
                       <button
                         onClick={() => setDeleteModal({ open: true, user })}
-                        className="p-2 text-muted-foreground hover:text-red-400 hover:bg-red-400/10 rounded-md transition-colors"
+                        className="p-2 text-muted-foreground dark:text-muted-foreground-dark hover:text-red-400 hover:bg-red-400/10 rounded-md transition-colors"
                         title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -152,22 +152,22 @@ function UsersPage() {
         <Modal title="Create User" onClose={() => setCreateModal(false)}>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-2">Username</label>
+              <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">Username</label>
               <input
                 type="text"
                 value={newUserName}
                 onChange={(e) => setNewUserName(e.target.value)}
-                className="w-full bg-input border border-border rounded-md py-2 px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-md py-2 px-4 text-foreground dark:text-foreground-dark focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Enter username"
               />
-              <p className="mt-2 text-xs text-muted-foreground">
+              <p className="mt-2 text-xs text-muted-foreground dark:text-muted-foreground-dark">
                 In Headscale, users are namespaces that group nodes together.
               </p>
             </div>
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setCreateModal(false)}
-                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="px-4 py-2 text-sm text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark transition-colors"
               >
                 Cancel
               </button>
@@ -187,13 +187,13 @@ function UsersPage() {
       {deleteModal.open && (
         <Modal title="Delete User" onClose={() => setDeleteModal({ open: false, user: null })}>
           <div className="space-y-4">
-            <p className="text-muted-foreground">
-              Are you sure you want to delete <span className="text-foreground font-medium">{deleteModal.user?.name}</span>? This will also remove all nodes and keys associated with this user.
+            <p className="text-muted-foreground dark:text-muted-foreground-dark">
+              Are you sure you want to delete <span className="text-foreground dark:text-foreground-dark font-medium">{deleteModal.user?.name}</span>? This will also remove all nodes and keys associated with this user.
             </p>
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setDeleteModal({ open: false, user: null })}
-                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="px-4 py-2 text-sm text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark transition-colors"
               >
                 Cancel
               </button>
@@ -216,12 +216,12 @@ function Modal({ title, children, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60 animate-fadeIn" onClick={onClose} />
-      <div className="relative bg-card border border-border rounded-lg w-full max-w-md p-6 animate-slideIn">
+      <div className="relative bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg w-full max-w-md p-6 animate-slideIn">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+          <h3 className="text-lg font-semibold text-foreground dark:text-foreground-dark">{title}</h3>
           <button
             onClick={onClose}
-            className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-1 text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark transition-colors"
           >
             <X className="w-5 h-5" />
           </button>

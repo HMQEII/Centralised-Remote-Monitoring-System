@@ -101,11 +101,11 @@ function NodesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Nodes</h1>
+        <h1 className="text-2xl font-bold text-foreground dark:text-foreground-dark">Nodes</h1>
         <button
           onClick={fetchNodes}
           disabled={loading}
-          className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:hover:text-foreground-dark hover:bg-secondary dark:hover:bg-secondary-dark rounded-md transition-colors disabled:opacity-50"
         >
           <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} />
           Refresh
@@ -121,13 +121,13 @@ function NodesPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-3 gap-4 mb-8">
-        <StatCard label="Total Nodes" value={stats.total} icon={Monitor} iconColor="text-cyan-500" />
+        <StatCard label="Total Nodes" value={stats.total} icon={Monitor} iconColor="text-blue-500" />
         <StatCard label="Online" value={stats.online} icon={Wifi} variant="success" />
         <StatCard label="Offline" value={stats.offline} icon={WifiOff} variant="danger" />
       </div>
 
       {/* Table */}
-      <div className="bg-card border border-border rounded-lg overflow-hidden">
+      <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg overflow-hidden">
         {loading && nodes.length === 0 ? (
           <div className="flex items-center justify-center py-12">
             <RefreshCw className="w-6 h-6 text-muted-foreground animate-spin" />
@@ -139,22 +139,24 @@ function NodesPage() {
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border bg-secondary/50">
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Device Name</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">IP Address</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">User</th>
-                {/* <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">OS</th> */}
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Status</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Last Seen</th>
-                <th className="text-right px-6 py-4 text-sm font-medium text-muted-foreground">Actions</th>
+              <tr className="border-b border-border dark:border-border-dark bg-secondary/50 dark:bg-secondary-dark/50">
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Id</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Device Name</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">IP Address</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">User</th>
+                {/* <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">OS</th> */}
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Status</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Last Seen</th>
+                <th className="text-right px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Actions</th>
               </tr>
             </thead>
             <tbody>
               {nodes.map((node) => (
-                <tr key={node.id} className="border-b border-border last:border-0 hover:bg-secondary/30 transition-colors">
-                  <td className="px-6 py-4 font-mono text-sm text-foreground">{node.name}</td>
-                  <td className="px-6 py-4 font-mono text-sm text-muted-foreground">{node.ip}</td>
-                  <td className="px-6 py-4 text-sm text-muted-foreground">{node.user}</td>
+                <tr key={node.id} className="border-b border-border dark:border-border-dark last:border-0 hover:bg-secondary/30 dark:hover:bg-secondary-dark/30 transition-colors">
+                  <td className="px-6 py-4 font-mono text-sm text-foreground dark:text-foreground-dark">{node.id}</td>
+                  <td className="px-6 py-4 font-mono text-sm text-foreground dark:text-foreground-dark">{node.name}</td>
+                  <td className="px-6 py-4 font-mono text-sm text-muted-foreground dark:text-muted-foreground-dark">{node.ip}</td>
+                  <td className="px-6 py-4 text-sm text-muted-foreground dark:text-muted-foreground-dark">{node.user}</td>
                   {/* <td className="px-6 py-4">
                     <span className={cn(
                       'inline-flex px-2 py-1 text-xs font-medium rounded',
@@ -169,11 +171,11 @@ function NodesPage() {
                   <td className="px-6 py-4">
                     <span className={cn(
                       'inline-flex items-center gap-2 px-2 py-1 text-xs font-medium rounded',
-                      node.status === 'online' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                      node.status === 'online' ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-400'
                     )}>
                       <span className={cn(
                         'w-2 h-2 rounded-full',
-                        node.status === 'online' ? 'bg-green-400' : 'bg-red-400'
+                        node.status === 'online' ? 'bg-green-500' : 'bg-red-400'
                       )} />
                       {node.status.charAt(0).toUpperCase() + node.status.slice(1)}
                     </span>
@@ -186,7 +188,7 @@ function NodesPage() {
                           setRenameModal({ open: true, node })
                           setNewName(node.name)
                         }}
-                        className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-colors"
+                        className="p-2 text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:hover:text-foreground-dark hover:bg-secondary dark:hover:bg-secondary-dark rounded-md transition-colors"
                         title="Rename"
                       >
                         <Pencil className="w-4 h-4" />
@@ -271,24 +273,24 @@ function NodesPage() {
 
 function StatCard({ label, value, icon: Icon, variant, iconColor }) {
   return (
-    <div className="bg-card border border-border rounded-lg p-6">
+    <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg p-6">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-muted-foreground mb-1">{label}</p>
+          <p className="text-sm text-muted-foreground dark:text-muted-foreground-dark mb-1">{label}</p>
           <p className={cn(
             'text-3xl font-bold',
-            variant === 'success' ? 'text-green-400' : variant === 'danger' ? 'text-red-400' : 'text-foreground'
+            variant === 'success' ? 'text-green-500' : variant === 'danger' ? 'text-red-400' : 'text-blue-500'
           )}>
             {value}
           </p>
         </div>
         <div className={cn(
           'p-3 rounded-lg',
-          variant === 'success' ? 'bg-green-500/20' : variant === 'danger' ? 'bg-red-500/20' : 'bg-cyan-400/10'
+          variant === 'success' ? 'bg-green-500/20' : variant === 'danger' ? 'bg-red-500/20' : 'bg-blue-500/20'
         )}>
           <Icon className={cn(
             'w-6 h-6',
-            iconColor || (variant === 'success' ? 'text-green-400' : variant === 'danger' ? 'text-red-400' : 'text-primary')
+            iconColor || (variant === 'success' ? 'text-green-500' : variant === 'danger' ? 'text-red-400' : 'text-primary')
           )} />
         </div>
       </div>
@@ -300,7 +302,7 @@ function Modal({ title, children, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60 animate-fadeIn" onClick={onClose} />
-      <div className="relative bg-card border border-border rounded-lg w-full max-w-md p-6 animate-slideIn">
+      <div className="relative bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg w-full max-w-md p-6 animate-slideIn">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-foreground">{title}</h3>
           <button

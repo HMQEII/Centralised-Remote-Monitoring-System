@@ -136,12 +136,12 @@ function AuthKeysPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-foreground">Pre-Auth Keys</h1>
+        <h1 className="text-2xl font-bold text-foreground dark:text-foreground-dark">Pre-Auth Keys</h1>
         <div className="flex items-center gap-3">
           <button
             onClick={fetchData}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark hover:bg-secondary dark:bg-secondary-dark rounded-md transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -164,44 +164,46 @@ function AuthKeysPage() {
       )}
 
       {/* Table */}
-      <div className="bg-card border border-border rounded-lg overflow-hidden">
+      <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg overflow-hidden">
         {loading && keys.length === 0 ? (
           <div className="flex items-center justify-center py-12">
-            <RefreshCw className="w-6 h-6 text-muted-foreground animate-spin" />
+            <RefreshCw className="w-6 h-6 text-muted-foreground dark:text-muted-foreground-dark animate-spin" />
           </div>
         ) : keys.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground">
+          <div className="text-center py-12 text-muted-foreground dark:text-muted-foreground-dark">
             No pre-auth keys found
           </div>
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border bg-secondary/50">
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Key</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">User</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Reusable</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Ephemeral</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Used</th>
-                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground">Expiration</th>
-                <th className="text-right px-6 py-4 text-sm font-medium text-muted-foreground">Actions</th>
+              <tr className="border-b border-border dark:border-border-dark bg-secondary dark:bg-secondary-dark/50">
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Id</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Key</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">User</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Reusable</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Ephemeral</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Used</th>
+                <th className="text-left px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Expiration</th>
+                <th className="text-right px-6 py-4 text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark">Actions</th>
               </tr>
             </thead>
             <tbody>
               {keys.map((authKey) => (
                 <tr key={authKey.id} className={cn(
-                  "border-b border-border last:border-0 hover:bg-secondary/30 transition-colors",
+                  "border-b border-border dark:border-border-dark last:border-0 hover:bg-secondary dark:bg-secondary-dark/30 transition-colors",
                   authKey.expired && "opacity-50"
                 )}>
+                  <td className="px-6 py-4 text-sm text-foreground dark:text-foreground-dark">{authKey.id}</td>
                   <td className="px-6 py-4">
-                    <code className="font-mono text-sm text-foreground bg-secondary px-2 py-1 rounded">
+                    <code className="font-mono text-sm text-foreground dark:text-foreground-dark bg-secondary dark:bg-secondary-dark px-2 py-1 rounded">
                       {authKey.key.slice(0, 16)}...
                     </code>
                   </td>
-                  <td className="px-6 py-4 text-sm text-foreground">{authKey.user}</td>
+                  <td className="px-6 py-4 text-sm text-foreground dark:text-foreground-dark">{authKey.user}</td>
                   <td className="px-6 py-4">
                     <span className={cn(
                       'inline-flex px-2 py-1 text-xs font-medium rounded',
-                      authKey.reusable ? 'bg-green-500/20 text-green-400' : 'bg-muted text-muted-foreground'
+                      authKey.reusable ? 'bg-green-500/20 text-green-500' : 'bg-muted dark:bg-muted-dark text-muted-foreground dark:text-muted-foreground-dark'
                     )}>
                       {authKey.reusable ? 'Yes' : 'No'}
                     </span>
@@ -209,7 +211,7 @@ function AuthKeysPage() {
                   <td className="px-6 py-4">
                     <span className={cn(
                       'inline-flex px-2 py-1 text-xs font-medium rounded',
-                      authKey.ephemeral ? 'bg-blue-500/20 text-blue-400' : 'bg-muted text-muted-foreground'
+                      authKey.ephemeral ? 'bg-blue-500/20 text-blue-500' : 'bg-muted dark:bg-muted-dark text-muted-foreground dark:text-muted-foreground-dark'
                     )}>
                       {authKey.ephemeral ? 'Yes' : 'No'}
                     </span>
@@ -217,7 +219,7 @@ function AuthKeysPage() {
                   <td className="px-6 py-4">
                     <span className={cn(
                       'inline-flex px-2 py-1 text-xs font-medium rounded',
-                      authKey.used ? 'bg-yellow-500/20 text-yellow-400' : 'bg-muted text-muted-foreground'
+                      authKey.used ? 'bg-yellow-500/20 text-yellow-500' : 'bg-muted dark:bg-muted-dark text-muted-foreground dark:text-muted-foreground-dark'
                     )}>
                       {authKey.used ? 'Yes' : 'No'}
                     </span>
@@ -225,7 +227,7 @@ function AuthKeysPage() {
                   <td className="px-6 py-4">
                     <span className={cn(
                       "font-mono text-sm",
-                      authKey.expired ? "text-red-400" : "text-muted-foreground"
+                      authKey.expired ? "text-red-400" : "text-muted-foreground dark:text-muted-foreground-dark"
                     )}>
                       {authKey.expiration}
                       {authKey.expired && " (Expired)"}
@@ -235,7 +237,7 @@ function AuthKeysPage() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleCopy(authKey.key, authKey.id)}
-                        className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md transition-colors"
+                        className="p-2 text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark hover:bg-secondary dark:bg-secondary-dark rounded-md transition-colors"
                         title="Copy Key"
                       >
                         {copiedId === authKey.id ? (
@@ -247,7 +249,7 @@ function AuthKeysPage() {
                       {!authKey.expired && (
                         <button
                           onClick={() => handleExpire(authKey)}
-                          className="p-2 text-muted-foreground hover:text-red-400 hover:bg-red-400/10 rounded-md transition-colors"
+                          className="p-2 text-muted-foreground dark:text-muted-foreground-dark hover:text-red-400 hover:bg-red-400/10 rounded-md transition-colors"
                           title="Expire Key"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -270,8 +272,8 @@ function AuthKeysPage() {
               <div className="bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-sm rounded-md p-3">
                 Make sure to copy your key now. You will not be able to see it again.
               </div>
-              <div className="bg-secondary border border-border rounded-md p-4">
-                <code className="font-mono text-sm text-foreground break-all">{generatedKey}</code>
+              <div className="bg-secondary dark:bg-secondary-dark border border-border dark:border-border-dark rounded-md p-4">
+                <code className="font-mono text-sm text-foreground dark:text-foreground-dark break-all">{generatedKey}</code>
               </div>
               <div className="flex justify-end gap-3">
                 <button
@@ -283,7 +285,7 @@ function AuthKeysPage() {
                 </button>
                 <button
                   onClick={closeModal}
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="px-4 py-2 text-sm text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark transition-colors"
                 >
                   Done
                 </button>
@@ -292,11 +294,11 @@ function AuthKeysPage() {
           ) : (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">User</label>
+                <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">User</label>
                 <select
                   value={form.user}
                   onChange={(e) => setForm({ ...form, user: e.target.value })}
-                  className="w-full bg-input border border-border rounded-md py-2 px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-md py-2 px-4 text-foreground dark:text-foreground-dark focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <option value="">Select a user</option>
                   {/* {users.map(user => (
@@ -308,11 +310,11 @@ function AuthKeysPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Expiration</label>
+                <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">Expiration</label>
                 <select
                   value={form.expiry}
                   onChange={(e) => setForm({ ...form, expiry: e.target.value })}
-                  className="w-full bg-input border border-border rounded-md py-2 px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-md py-2 px-4 text-foreground dark:text-foreground-dark focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   {expiryOptions.map(opt => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -326,9 +328,9 @@ function AuthKeysPage() {
                     id="reusable"
                     checked={form.reusable}
                     onChange={(e) => setForm({ ...form, reusable: e.target.checked })}
-                    className="w-4 h-4 rounded border-border bg-input text-primary focus:ring-primary"
+                    className="w-4 h-4 rounded border-border dark:border-border-dark bg-input dark:bg-input-dark text-primary focus:ring-primary"
                   />
-                  <label htmlFor="reusable" className="text-sm text-foreground">Reusable</label>
+                  <label htmlFor="reusable" className="text-sm text-foreground dark:text-foreground-dark">Reusable</label>
                 </div>
                 <div className="flex items-center gap-3">
                   <input
@@ -336,18 +338,18 @@ function AuthKeysPage() {
                     id="ephemeral"
                     checked={form.ephemeral}
                     onChange={(e) => setForm({ ...form, ephemeral: e.target.checked })}
-                    className="w-4 h-4 rounded border-border bg-input text-primary focus:ring-primary"
+                    className="w-4 h-4 rounded border-border dark:border-border-dark bg-input dark:bg-input-dark text-primary focus:ring-primary"
                   />
-                  <label htmlFor="ephemeral" className="text-sm text-foreground">Ephemeral</label>
+                  <label htmlFor="ephemeral" className="text-sm text-foreground dark:text-foreground-dark">Ephemeral</label>
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground dark:text-muted-foreground-dark">
                 Ephemeral nodes are automatically removed when they go offline.
               </p>
               <div className="flex justify-end gap-3">
                 <button
                   onClick={closeModal}
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="px-4 py-2 text-sm text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark transition-colors"
                 >
                   Cancel
                 </button>
@@ -371,12 +373,12 @@ function Modal({ title, children, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60 animate-fadeIn" onClick={onClose} />
-      <div className="relative bg-card border border-border rounded-lg w-full max-w-md p-6 animate-slideIn">
+      <div className="relative bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg w-full max-w-md p-6 animate-slideIn">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+          <h3 className="text-lg font-semibold text-foreground dark:text-foreground-dark">{title}</h3>
           <button
             onClick={onClose}
-            className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-1 text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
