@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Copy, Check, X, RefreshCw, AlertCircle, Trash2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { getUsers, getAllPreAuthKeys, createPreAuthKey, expirePreAuthKey, isConfigured } from '../../api/headscale'
+import { getUsers, getAllPreAuthKeys, createPreAuthKey, deletePreAuthKey, isConfigured } from '../../api/headscale'
 
 const expiryOptions = [
   { label: '1 Hour', value: '1h' },
@@ -23,6 +23,7 @@ function AuthKeysPage() {
   const [copiedId, setCopiedId] = useState(null)
   const [actionLoading, setActionLoading] = useState(false)
   const [form, setForm] = useState({ user: '', expiry: '24h', reusable: false, ephemeral: false })
+  const [deleteConfirm, setDeleteConfirm] = useState(null) // Add this line after actionLoading state
 
   const fetchData = async () => {
     if (!isConfigured()) {
@@ -104,17 +105,32 @@ function AuthKeysPage() {
     }
   }
 
-  const handleExpire = async (key) => {
-    console.log('expiring key:', key.user, key.key)
+  // const handleExpire = async (key) => {
+  //   console.log('expiring key:', key.user, key.key)
+  //   try {
+  //     // setActionLoading(true)
+  //     // await expirePreAuthKey(key.userId, key.key)
+  //     // await fetchData()
+  //     setActionLoading(true)
+  //     const response = await expirePreAuthKey(key.userId, key.key)
+  //     console.log('expire response:', response)
+  //     await fetchData()
+  //   } catch (err) {
+  //     setError(err.message)
+  //   } finally {
+  //     setActionLoading(false)
+  //   }
+  // }
+
+  const handleDelete = async (keyId) => {
     try {
-      // setActionLoading(true)
-      // await expirePreAuthKey(key.userId, key.key)
-      // await fetchData()
       setActionLoading(true)
-      const response = await expirePreAuthKey(key.userId, key.key)
-      console.log('expire response:', response)
+      console.log('Deleting pre-auth key with ID:', keyId)
+      await deletePreAuthKey(keyId)
       await fetchData()
+      setDeleteConfirm(null)
     } catch (err) {
+      console.error('Delete error:', err)
       setError(err.message)
     } finally {
       setActionLoading(false)
@@ -246,11 +262,22 @@ function AuthKeysPage() {
                           <Copy className="w-4 h-4" />
                         )}
                       </button>
-                      {!authKey.expired && (
+                      {/* {!authKey.expired && (
                         <button
                           onClick={() => handleExpire(authKey)}
                           className="p-2 text-muted-foreground dark:text-muted-foreground-dark hover:text-red-400 hover:bg-red-400/10 rounded-md transition-colors"
                           title="Expire Key"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )} */}
+                      {!authKey.expired && (
+                        <button
+                          // onClick={() => handleDelete(authKey.id)}
+                          onClick={() => setDeleteConfirm({ id: authKey.id, user: authKey.user })}
+                          disabled={actionLoading}
+                          className="p-2 text-muted-foreground dark:text-muted-foreground-dark hover:text-red-400 hover:bg-red-400/10 rounded-md transition-colors disabled:opacity-50"
+                          title="Delete Key"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -261,6 +288,37 @@ function AuthKeysPage() {
               ))}
             </tbody>
           </table>
+        )}
+
+
+        {/* Delete Confirmation Modal */}
+        {deleteConfirm && (
+          <Modal title="Confirm Delete" onClose={() => setDeleteConfirm(null)}>
+            <div className="space-y-4">
+              <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-md p-3">
+                <AlertCircle className="w-5 h-5 inline mr-2" />
+                This action cannot be undone.
+              </div>
+              <p className="text-sm text-foreground dark:text-foreground-dark">
+                Are you sure you want to delete the pre-auth key for user <strong>{deleteConfirm.user}</strong>?
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="px-4 py-2 text-sm text-muted-foreground dark:text-muted-foreground-dark hover:text-foreground dark:text-foreground-dark transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleDelete(deleteConfirm.id)}
+                  disabled={actionLoading}
+                  className="px-4 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {actionLoading ? 'Deleting...' : 'Delete'}
+                </button>
+              </div>
+            </div>
+          </Modal>
         )}
       </div>
 

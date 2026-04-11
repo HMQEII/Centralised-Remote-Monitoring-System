@@ -130,6 +130,13 @@ export async function expirePreAuthKey(user, key) {
   });
 }
 
+
+export async function deletePreAuthKey(keyId) {
+  console.log('deleting key with id:', keyId)
+  return apiCall(`/preauthkey?id=${keyId}`, { 
+    method: 'DELETE' 
+  });
+}
 // ============ API KEYS ============
 
 export async function getApiKeys() {
