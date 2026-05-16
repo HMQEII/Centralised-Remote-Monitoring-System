@@ -67,7 +67,7 @@
 // }
 
 // export default Sidebar
-import { Monitor, Users, Key, LogOut, Moon, Sun } from 'lucide-react'
+import { Monitor, Users, Key, LogOut, Moon, Sun, Frame, ListVideo } from 'lucide-react'
 import { cn } from '../lib/utils'
 import { useTheme } from './ThemeContext'
 
@@ -75,6 +75,7 @@ const navItems = [
   { id: 'nodes', label: 'Nodes', icon: Monitor },
   { id: 'users', label: 'Users', icon: Users },
   { id: 'auth-keys', label: 'Auth Keys', icon: Key },
+  { id: 'playback', label: 'Playback', icon: ListVideo },
 ]
 
 function Sidebar({ user, activePage, onPageChange, onLogout }) {

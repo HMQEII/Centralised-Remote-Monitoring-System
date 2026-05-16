@@ -3,6 +3,8 @@ import Sidebar from './Sidebar'
 import NodesPage from './pages/NodesPage'
 import UsersPage from './pages/UsersPage'
 import AuthKeysPage from './pages/AuthKeysPage'
+import PlaybackPage from './pages/PlaybackPage'
+import { Play } from 'lucide-react'
 
 function Dashboard({ user, onLogout }) {
   const [activePage, setActivePage] = useState('nodes')
@@ -15,6 +17,8 @@ function Dashboard({ user, onLogout }) {
         return <UsersPage />
       case 'auth-keys':
         return <AuthKeysPage />
+      case 'playback':
+        return <PlaybackPage />
       default:
         return <NodesPage />
     }

@@ -7,6 +7,10 @@ export default {
   ],
   theme: {
     extend: {
+      ringColor: {
+        DEFAULT: '#004B4B',
+        primary: '#004B4B',
+      },
       colors: {
         // Light mode colors
         background: {
