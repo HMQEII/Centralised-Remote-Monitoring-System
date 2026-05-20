@@ -4,6 +4,7 @@ import NodesPage from './pages/NodesPage'
 import UsersPage from './pages/UsersPage'
 import AuthKeysPage from './pages/AuthKeysPage'
 import PlaybackPage from './pages/PlaybackPage'
+import ConfigurationPage from './pages/ConfigurationPage'
 import { Play } from 'lucide-react'
 
 function Dashboard({ user, onLogout }) {
@@ -12,13 +13,15 @@ function Dashboard({ user, onLogout }) {
   const renderPage = () => {
     switch (activePage) {
       case 'nodes':
-        return <NodesPage />
+        return <NodesPage user={user} />
       case 'users':
         return <UsersPage />
       case 'auth-keys':
-        return <AuthKeysPage />
+        return <AuthKeysPage user={user} />
       case 'playback':
-        return <PlaybackPage />
+        return <PlaybackPage user={user}/>
+      case 'device-config':
+        return <ConfigurationPage user={user}/>  
       default:
         return <NodesPage />
     }

@@ -15,6 +15,7 @@ function UsersPage() {
     if (!isConfigured()) {
       setError('Headscale API not configured. Please set VITE_HEADSCALE_URL and VITE_HEADSCALE_API_KEY in your .env file.')
       setLoading(false)
+      
       return
     }
 
@@ -22,6 +23,7 @@ function UsersPage() {
       setLoading(true)
       setError(null)
       const data = await getUsers()
+      console.log('Raw API response:', data)
       const transformedUsers = data.map(user => ({
         id: user.id,
         name: user.name,
@@ -63,7 +65,7 @@ function UsersPage() {
   const handleDelete = async () => {
     try {
       setActionLoading(true)
-      await deleteUser(deleteModal.user.name)
+      await deleteUser(deleteModal.user.id)
       await fetchUsers()
       setDeleteModal({ open: false, user: null })
     } catch (err) {
@@ -158,10 +160,10 @@ function UsersPage() {
                 value={newUserName}
                 onChange={(e) => setNewUserName(e.target.value)}
                 className="w-full bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-md py-2 px-4 text-foreground dark:text-foreground-dark focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Enter username"
+                placeholder="Enter a sensible username"
               />
               <p className="mt-2 text-xs text-muted-foreground dark:text-muted-foreground-dark">
-                In Headscale, users are namespaces that group nodes together.
+                Above mentioned username will be reflected in all nodes henceforth connected to this user.
               </p>
             </div>
             <div className="flex justify-end gap-3">

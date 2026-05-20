@@ -3,7 +3,7 @@ import { Monitor, Wifi, WifiOff, Pencil, Trash2, X, RefreshCw, AlertCircle } fro
 import { cn } from '../../lib/utils'
 import { getNodes, deleteNode, renameNode, isConfigured } from '../../api/headscale'
 
-function NodesPage() {
+function NodesPage({ user }) {
   const [nodes, setNodes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -22,7 +22,7 @@ function NodesPage() {
     try {
       setLoading(true)
       setError(null)
-      const data = await getNodes()
+      const data = await getNodes(user?.headscaleUser) // Pass headscaleUser to filter nodes by user
       // Transform Headscale node data to our format
       const transformedNodes = data.map(node => ({
         id: node.id,
@@ -46,7 +46,7 @@ function NodesPage() {
     // Auto-refresh every 15 seconds
     const interval = setInterval(fetchNodes, 15000)
     return () => clearInterval(interval)
-  }, [])
+  }, [user])
 
   const detectOS = (osString) => {
     const os = osString.toLowerCase()

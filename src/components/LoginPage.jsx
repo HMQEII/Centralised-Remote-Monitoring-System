@@ -4,7 +4,8 @@ import { Eye, EyeOff, Lock, User } from 'lucide-react'
 
 const USERS = {
   admin: { password: 'crms@2024', name: 'Administrator' },
-  manager: { password: 'ulteam@2024', name: 'Manager' }
+  ulteam: { password: 'ulteam@2024', name: 'Ulteam' , headscaleUser: 'ulteam', headscaleUserId: '1'},
+  hexagon: { password: 'hexagon@2026', name: 'Hexagon', headscaleUser: 'hexagon', headscaleUserId: '6' }
 }
 
 function LoginPage({ onLogin }) {
@@ -24,7 +25,8 @@ function LoginPage({ onLogin }) {
 
     const user = USERS[username.toLowerCase()]
     if (user && user.password === password) {
-      onLogin({ username: username.toLowerCase(), name: user.name })
+      // onLogin({ username: username.toLowerCase(), name: user.name })
+      onLogin({ username: username.toLowerCase(), name: user.name, headscaleUser: user.headscaleUser, headscaleUserId: user.headscaleUserId })
     } else {
       setError('Invalid username or password')
     }

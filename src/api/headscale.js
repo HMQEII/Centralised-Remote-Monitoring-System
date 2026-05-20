@@ -29,9 +29,16 @@ async function apiCall(endpoint, options = {}) {
 
 // ============ NODES/MACHINES ============
 
-export async function getNodes() {
-  const data = await apiCall('/node');
-  return data.nodes || [];
+// export async function getNodes() {
+//   const data = await apiCall('/node');
+//   return data.nodes || [];
+// }
+export async function getNodes(user = null) {
+  console.log('getNodes called with user:', user)
+  const endpoint = user ? `/node?user=${user}` : '/node'
+  console.log('endpoint:', endpoint)
+  const data = await apiCall(endpoint)
+  return data.nodes || []
 }
 
 export async function getNode(nodeId) {
@@ -70,8 +77,8 @@ export async function createUser(name) {
   });
 }
 
-export async function deleteUser(name) {
-  return apiCall(`/user/${name}`, { method: 'DELETE' });
+export async function deleteUser(id) {
+  return apiCall(`/user/${id}`, { method: 'DELETE' });
 }
 
 export async function renameUser(oldName, newName) {

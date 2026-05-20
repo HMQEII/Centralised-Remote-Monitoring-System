@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Copy, Check, X, RefreshCw, AlertCircle, Trash2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { getUsers, getAllPreAuthKeys, createPreAuthKey, deletePreAuthKey, isConfigured } from '../../api/headscale'
+import { getUsers, getAllPreAuthKeys, getPreAuthKeys, createPreAuthKey, deletePreAuthKey, isConfigured } from '../../api/headscale'
 
 const expiryOptions = [
   { label: '1 Hour', value: '1h' },
@@ -40,7 +40,13 @@ function AuthKeysPage() {
         getUsers(),
         getAllPreAuthKeys()
       ])
-      
+
+      // const isAdmin = user?.headscaleUser === 'ulteam'
+      // const [usersData, keysData] = await Promise.all([
+      //   getUsers(),
+      //   isAdmin ? getAllPreAuthKeys() : getPreAuthKeys(user?.headscaleUser)
+      // ])
+
       console.log('raw keys:', keysData)
       // setUsers(usersData.map(u => u.name))
       setUsers(usersData)
@@ -50,6 +56,8 @@ function AuthKeysPage() {
         key: key.key,
         user: key.user,
         userId: key.userId,
+        // user: key.user || user?.headscaleUser,
+        // userId: key.userId || user?.headscaleUser,
         reusable: key.reusable,
         ephemeral: key.ephemeral,
         used: key.used,

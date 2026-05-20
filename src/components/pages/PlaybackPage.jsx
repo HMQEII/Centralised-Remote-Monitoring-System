@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Video, Calendar, Search, Play, AlertCircle, Loader2, RefreshCw } from 'lucide-react'
 import { getNodes, isConfigured } from '../../api/headscale'
 
-function PlaybackPage() {
+function PlaybackPage({ user}) {
   const [nodes, setNodes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -17,6 +17,8 @@ function PlaybackPage() {
   const [selectedStream, setSelectedStream] = useState('')
   const [fetchingStreams, setFetchingStreams] = useState(false)
   const [dvrIP, setDvrIP] = useState('')
+  const [nvrUname, setNvrUname] = useState('')
+  const [nvrPass, setNvrPass] = useState('')
   const [currentStreamName, setCurrentStreamName] = useState('')
   const [currentGo2rtcIP, setCurrentGo2rtcIP] = useState('')
   const [startTime, setStartTime] = useState('00:00')
@@ -44,7 +46,7 @@ function PlaybackPage() {
     try {
       setLoading(true)
       setError(null)
-      const data = await getNodes()
+      const data = await getNodes(user?.headscaleUser)
       const transformedNodes = data.map(node => ({
         id: node.id,
         name: node.givenName || node.name,
@@ -187,8 +189,8 @@ function PlaybackPage() {
       const start = new Date(`${selectedDate}T${startTime}:00Z`)
       const end = new Date(`${selectedDate}T${endTime}:59Z`)
 
-      const hikvisionUrl = `rtsp://admin:Ulteam@2016@${dvrIP}/Streaming/tracks/${camera.trackId}/?starttime=${toHikvisionTime(start)}&endtime=${toHikvisionTime(end)}#video=copy#media=video`
-      const dahuaUrl = `ffmpeg:rtsp://admin:Admin1234@${dvrIP}:554/cam/playback?channel=${selectedCamera}&starttime=${toDahuaTime(start)}&endtime=${toDahuaTime(end)}#transport=tcp`
+      const hikvisionUrl = `rtsp://${nvrUname}:${nvrPass}@${dvrIP}/Streaming/tracks/${camera.trackId}/?starttime=${toHikvisionTime(start)}&endtime=${toHikvisionTime(end)}#video=copy#media=video`
+      const dahuaUrl = `ffmpeg:rtsp://${nvrUname}:${nvrPass}@${dvrIP}:554/cam/playback?channel=${selectedCamera}&starttime=${toDahuaTime(start)}&endtime=${toDahuaTime(end)}#transport=tcp`
       const rtspUrl = dvrBrand === 'hikvision' ? hikvisionUrl : dahuaUrl
 
       const go2rtcIP = selectedNode
@@ -238,7 +240,7 @@ function PlaybackPage() {
       )}
 
       <div className="bg-card dark:bg-card-dark border border-border dark:border-border-dark rounded-lg p-6 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
 
           {/* Device */}
           <div>
@@ -251,7 +253,7 @@ function PlaybackPage() {
             >
               <option value="">Select device...</option>
               {nodes.map((node) => (
-                <option key={node.id} value={node.ip}>{node.name} ({node.ip})</option>
+                <option key={node.id} value={node.ip}>{node.name}</option>
               ))}
             </select>
           </div>
@@ -259,7 +261,7 @@ function PlaybackPage() {
           {/* Stream / DVR IP */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">
-              DVR Source {fetchingStreams && <Loader2 className="inline w-3 h-3 animate-spin ml-1" />}
+              DVR/NVR Source {fetchingStreams && <Loader2 className="inline w-3 h-3 animate-spin ml-1" />}
             </label>
             <select
               value={selectedStream}
@@ -268,7 +270,7 @@ function PlaybackPage() {
               className="w-full bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-md py-2 px-4 text-foreground dark:text-foreground-dark focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
             >
               <option value="">
-                {fetchingStreams ? 'Fetching sources...' : Object.keys(streams).length === 0 && selectedNode ? 'No sources found' : 'Select DVR source...'}
+                {fetchingStreams ? 'Fetching sources...' : Object.keys(streams).length === 0 && selectedNode ? 'No sources found' : 'Select source...'}
               </option>
               {/* {Object.keys(streams).map((name) => (
                 <option key={name} value={name}>
@@ -288,7 +290,7 @@ function PlaybackPage() {
 
           {/* DVR Brand - auto detected but overridable */}
           <div>
-            <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">DVR Brand</label>
+            <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">DVR/NVR Brand</label>
             <select
               value={dvrBrand}
               onChange={(e) => setDvrBrand(e.target.value)}
@@ -299,10 +301,6 @@ function PlaybackPage() {
               <option value="cpplus">CP Plus | Dahua</option>
             </select>
           </div>
-
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 
           {/* Camera */}
           <div>
@@ -319,6 +317,10 @@ function PlaybackPage() {
               ))}
             </select>
           </div>
+
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 
           {/* Date */}
           <div>
@@ -347,17 +349,32 @@ function PlaybackPage() {
             />
           </div>
 
-          {/* End Time */}
-          {/* <div>
-            <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">End Time</label>
+          {/* DVR/NVR Username */}
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">DVR/NVR Username</label>
             <input
-              type="time"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
+              type="text"
+              value={nvrUname}
+              onChange={(e) => setNvrUname(e.target.value)}
               disabled={!selectedStream || !selectedCamera}
               className="w-full bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-md py-2 px-4 text-foreground dark:text-foreground-dark focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
             />
-          </div> */}
+          </div>
+
+          {/* DVR/NVR Password */}
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground dark:text-muted-foreground-dark mb-2">DVR/NVR Password</label>
+            <input
+              type="password"
+              value={nvrPass}
+              onChange={(e) => setNvrPass(e.target.value)}
+              disabled={!selectedStream || !selectedCamera}
+              className="w-full bg-input dark:bg-input-dark border border-border dark:border-border-dark rounded-md py-2 px-4 text-foreground dark:text-foreground-dark focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mt-5">
 
           {/* Fetch Button */}
           <div className="flex items-end">
@@ -373,24 +390,6 @@ function PlaybackPage() {
               )}
             </button>
           </div>
-
-          {/* <div className="border-b border-border dark:border-border-dark p-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Play className="w-5 h-5 text-primary" />
-              <div>
-                <h3 className="font-medium text-foreground dark:text-foreground-dark">Recording Playback</h3>
-                <p className="text-sm text-muted-foreground dark:text-muted-foreground-dark">
-                  Camera {selectedCamera} • {selectedDate} • {dvrIP}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={handleStopPlayback}
-              className="flex items-center gap-2 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-md py-1.5 px-3 text-sm transition-colors"
-            >
-              Stop
-            </button>
-          </div> */}
 
         </div>
       </div>
